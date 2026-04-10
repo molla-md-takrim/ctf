@@ -1,0 +1,160 @@
+========================================
+MISC CTF CHEATSHEET
+========================================
+
+[GENERAL APPROACH]
+1. Read challenge carefully
+2. Look for hints (title, description)
+3. Try simple + stupid things first
+4. If confusing → skip fast
+
+========================================
+🧠 COMMON TRICKS
+========================================
+
+[1. REVERSE]
+- Reverse string
+rev file.txt
+
+[2. BASE ENCODING]
+- Base64, Hex, Binary
+→ Use crypto cheatsheet
+
+[3. MULTIPLE LAYERS]
+- Decode again and again
+
+[4. CASE CHANGE]
+- lower ↔ UPPER
+
+[5. REMOVE SPACES / SYMBOLS]
+- Clean input
+
+========================================
+📦 FILE TRICKS
+========================================
+
+- File inside file
+- Rename extension (jpg → zip)
+- Open in text editor
+- Check end of file
+
+========================================
+🔢 NUMBER BASES
+========================================
+
+[Binary]
+01001000
+
+[Decimal]
+72 101 108
+
+[Hex]
+68656c6c6f
+
+→ Convert to ASCII
+
+========================================
+🧩 PUZZLES / LOGIC
+========================================
+
+- Patterns (abc, 123, etc.)
+- Sequence problems
+- Simple math
+
+========================================
+🌐 OSINT (IF PRESENT)
+========================================
+
+- Search names, usernames
+- Check social media
+- Google hints
+
+========================================
+⌨️ KEYBOARD TRICKS
+========================================
+
+- QWERTY shift
+- Adjacent keys
+- Example:
+  gsv → the (Atbash cipher)
+
+========================================
+🔐 SIMPLE CIPHERS
+========================================
+
+[Atbash]
+A ↔ Z
+B ↔ Y
+
+[ROT]
+ROT13, ROT5
+
+========================================
+🧠 STEGO-LIKE TRICKS
+========================================
+
+- Hidden in whitespace
+- Hidden in formatting
+- Invisible characters
+
+========================================
+📡 NETWORK / SERVER
+========================================
+
+- nc (netcat)
+
+nc host port
+
+- Interact with service
+- Send input manually
+
+========================================
+🧪 SCRIPTING (BASIC)
+========================================
+
+- Use Python for brute force
+
+Example:
+for i in range(1000):
+    print(i)
+
+========================================
+🔍 SEARCH FOR FLAG
+========================================
+
+grep -i flag file
+grep -i ctf file
+
+========================================
+🔥 QUICK CHECKLIST
+========================================
+
+[ ] Reversed?
+[ ] Encoded?
+[ ] Multiple layers?
+[ ] File inside file?
+[ ] Wrong extension?
+[ ] Pattern?
+[ ] Simple cipher?
+[ ] Hidden text?
+[ ] Netcat service?
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Overthinking
+- Ignoring hints
+- Not trying basic tricks
+- Spending too much time
+
+========================================
+RULES
+========================================
+
+- THINK SIMPLE
+- TRY RANDOM BUT LOGICAL
+- IF CONFUSED → SKIP
+- COME BACK LATER
+
+========================================

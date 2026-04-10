@@ -1,0 +1,164 @@
+========================================
+FORENSICS CTF CHEATSHEET
+========================================
+
+[GENERAL APPROACH]
+1. Identify file type
+2. Open / inspect file
+3. Extract hidden data
+4. Search for "flag"
+
+========================================
+📂 FILE IDENTIFICATION
+========================================
+
+file filename
+
+- Tells real file type
+- Useful if extension is fake
+
+========================================
+🔍 STRINGS (MOST IMPORTANT)
+========================================
+
+strings filename
+strings filename | grep flag
+
+- Extract readable text
+- FIRST thing to try always
+
+========================================
+🖼️ IMAGE FORENSICS
+========================================
+
+[Check metadata]
+exiftool image.jpg
+
+[Extract hidden data]
+binwalk image.jpg
+
+[Manual check]
+- Open in text editor
+- Look at bottom of file
+
+========================================
+📦 BINWALK (HIDDEN FILES)
+========================================
+
+binwalk file
+binwalk -e file
+
+- Extract embedded files
+
+========================================
+🗜️ ZIP / ARCHIVES
+========================================
+
+unzip file.zip
+
+[If password protected]
+- Try common passwords
+- Check inside hints
+
+========================================
+📄 STEGANOGRAPHY
+========================================
+
+[steghide]
+steghide extract -sf image.jpg
+
+[Common passwords]
+password
+1234
+admin
+
+========================================
+🧾 TEXT FILES
+========================================
+
+cat file.txt
+less file.txt
+
+- Look for hidden text
+- Check unusual spacing
+
+========================================
+🔢 ENCODING INSIDE FILES
+========================================
+
+- Base64
+- Hex
+- Binary
+
+→ Decode using crypto cheatsheet
+
+========================================
+🧠 PCAP (NETWORK FILES)
+========================================
+
+[Wireshark]
+- Follow TCP stream
+- Search for "flag"
+
+========================================
+🗂️ PDF FORENSICS
+========================================
+
+strings file.pdf
+binwalk file.pdf
+
+- Hidden data inside
+
+========================================
+🧩 COMMON TRICKS
+========================================
+
+- File inside file
+- Hidden at end of file
+- Wrong file extension
+- Encoded inside file
+- Multiple layers
+
+========================================
+🔍 GREP SEARCH
+========================================
+
+grep -i flag filename
+grep -i password filename
+
+========================================
+🔥 QUICK CHECKLIST
+========================================
+
+[ ] Ran file command
+[ ] Ran strings
+[ ] Searched "flag"
+[ ] Checked metadata (exiftool)
+[ ] Ran binwalk
+[ ] Tried unzip
+[ ] Checked hidden data
+[ ] Tried steghide
+[ ] Looked manually
+
+========================================
+🔥 MUST REMEMBER TOOLS
+========================================
+
+file
+strings
+binwalk
+exiftool
+steghide
+grep
+
+========================================
+RULES
+========================================
+
+- STRINGS FIRST ALWAYS
+- IF FILE → INSPECT
+- LOOK FOR HIDDEN DATA
+- SIMPLE TRICKS WIN
+- DON'T OVERTHINK
+
+========================================

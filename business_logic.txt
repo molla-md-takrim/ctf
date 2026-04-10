@@ -1,0 +1,173 @@
+========================================
+WEB LOGIC ISSUES CHEATSHEET
+(Business Logic + Race + Parameter Tampering)
+========================================
+
+[WHAT IS THIS]
+- No technical bug
+- You break the application logic
+
+========================================
+🧠 BUSINESS LOGIC FLAWS
+========================================
+
+[HOW TO IDENTIFY]
+- Multi-step processes (buy, login, reset)
+- Price / quantity / coupon involved
+- Flow can be manipulated
+
+----------------------------------------
+🔥 COMMON ATTACKS
+----------------------------------------
+
+[Skip Steps]
+Go directly:
+/checkout → /payment → /success
+
+[Negative Price]
+price=100 → -100
+
+[Zero Price]
+price=100 → 0
+
+[Change Quantity]
+qty=1 → 100
+
+[Apply Coupon Multiple Times]
+discount=10 → 100
+
+[Remove Required Field]
+Remove payment / verification field
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Intercept request (Burp)
+2. Modify:
+   price / qty / discount
+3. Skip steps manually (URL)
+4. Send request
+
+========================================
+⚡ RACE CONDITIONS
+========================================
+
+[WHAT]
+- Send multiple requests at same time
+- Exploit timing issue
+
+----------------------------------------
+🔥 COMMON ATTACKS
+----------------------------------------
+
+[Multiple Purchase]
+Buy item multiple times with one payment
+
+[Coupon Reuse]
+Apply same coupon multiple times
+
+[Balance Abuse]
+Withdraw money multiple times
+
+----------------------------------------
+🧪 HOW TO DO
+----------------------------------------
+
+- Use Burp Repeater / Intruder
+- Send same request MANY times quickly
+
+Example:
+Send 10 requests at same time
+
+----------------------------------------
+💡 SIMPLE METHOD
+----------------------------------------
+
+Click button very fast multiple times
+
+========================================
+🔓 PARAMETER TAMPERING
+========================================
+
+[WHAT]
+- Modify hidden or visible parameters
+
+----------------------------------------
+🔥 COMMON PAYLOADS
+----------------------------------------
+
+price=100 → 1
+price=100 → 0
+
+role=user → admin
+is_admin=0 → 1
+
+user_id=1 → 2 → 3
+
+discount=0 → 100
+
+access=basic → premium
+
+----------------------------------------
+📂 HIDDEN FIELD ATTACK
+----------------------------------------
+
+<input type="hidden" name="price" value="100">
+
+→ Change value to:
+price=1
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Capture request
+2. Change parameters:
+   - price
+   - role
+   - id
+   - discount
+3. Send request
+4. Observe response
+
+========================================
+🔍 COMMON ENTRY POINTS
+========================================
+
+- Checkout / payment pages
+- Coupon systems
+- Profile update forms
+- API requests
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+price=100 → 1
+price=100 → 0
+price=100 → -100
+role=user → admin
+is_admin=0 → 1
+user_id=1 → 2 → 3
+discount=0 → 100
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Not modifying parameters
+- Trusting frontend values
+- Not trying negative values
+- Ignoring multi-step flow
+
+========================================
+RULES
+========================================
+
+- TRUST NOTHING FROM CLIENT
+- CHANGE EVERYTHING
+- TRY NEGATIVE / ZERO VALUES
+- SPAM REQUESTS FOR RACE
+
+========================================

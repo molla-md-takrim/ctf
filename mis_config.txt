@@ -1,0 +1,191 @@
+========================================
+SECURITY MISCONFIGURATION CHEATSHEET
+(Open Redirect + Directory Listing + Debug + CORS)
+========================================
+
+[WHAT IS THIS]
+- Bad server configuration
+- Exposed features / weak settings
+
+========================================
+🔀 OPEN REDIRECT
+========================================
+
+[HOW TO IDENTIFY]
+- URL parameters like:
+  ?redirect=
+  ?url=
+  ?next=
+  ?return=
+
+Example:
+?redirect=/home
+
+----------------------------------------
+🔥 PAYLOADS
+----------------------------------------
+
+?redirect=https://evil.com
+?url=https://evil.com
+?next=https://evil.com
+
+----------------------------------------
+🔓 BYPASS FILTERS
+----------------------------------------
+
+https://evil.com
+//evil.com
+///evil.com
+https:evil.com
+https://trusted.com@evil.com
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Find redirect parameter
+2. Replace with:
+   https://evil.com
+3. If blocked → try bypass
+
+========================================
+📂 DIRECTORY LISTING
+========================================
+
+[HOW TO IDENTIFY]
+- Access folder directly:
+  /uploads/
+  /images/
+  /files/
+
+----------------------------------------
+🔥 ACTION
+----------------------------------------
+
+/uploads/
+/images/
+/backup/
+/files/
+
+----------------------------------------
+🎯 WHAT TO LOOK FOR
+----------------------------------------
+
+- .txt files
+- .log files
+- backups
+- flags
+
+========================================
+🐞 DEBUG ENDPOINTS
+========================================
+
+[COMMON PATHS]
+/admin
+/debug
+/test
+/dev
+/api/debug
+/console
+
+----------------------------------------
+🔥 TRY THESE
+----------------------------------------
+
+/admin
+/debug
+/test
+/.git
+/.env
+/backup
+
+----------------------------------------
+🎯 WHAT TO LOOK FOR
+----------------------------------------
+
+- credentials
+- API keys
+- hidden endpoints
+- source code
+
+========================================
+🌐 MISCONFIGURED CORS
+========================================
+
+[HOW TO IDENTIFY]
+- Response header:
+  Access-Control-Allow-Origin: *
+
+----------------------------------------
+🔥 TEST PAYLOAD
+----------------------------------------
+
+Origin: https://evil.com
+
+----------------------------------------
+🧪 METHOD
+----------------------------------------
+
+1. Intercept request (Burp)
+2. Add header:
+   Origin: https://evil.com
+3. Send request
+4. Check response:
+   Access-Control-Allow-Origin: *
+
+→ vulnerable
+
+----------------------------------------
+⚠️ DANGEROUS CASE
+----------------------------------------
+
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+========================================
+🔍 COMMON ENTRY POINTS
+========================================
+
+- Redirect URLs
+- Public directories
+- Admin panels
+- API endpoints
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+?redirect=https://evil.com
+//evil.com
+https://trusted.com@evil.com
+
+/uploads/
+/images/
+/backup/
+
+/admin
+/debug
+/.env
+/.git
+
+Origin: https://evil.com
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Not trying simple endpoints
+- Ignoring directories
+- Not checking headers
+- Skipping /admin
+
+========================================
+RULES
+========================================
+
+- ALWAYS TRY /admin /debug
+- ALWAYS CHECK DIRECTORIES
+- REDIRECT PARAM = TEST IT
+- HEADERS CAN LEAK DATA
+
+========================================

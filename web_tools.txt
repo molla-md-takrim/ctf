@@ -1,0 +1,172 @@
+========================================
+CTF ONLINE TOOLS CHEATSHEET
+========================================
+
+========================================
+🔧 CYBERCHEF
+========================================
+
+URL: https://gchq.github.io/CyberChef/
+
+[WHAT IT DOES]
+- Decode / encode / analyze data
+- Base64, Hex, ROT13, XOR, etc.
+
+[HOW TO USE]
+1. Paste input (left side)
+2. Search operation (top search bar)
+3. Drag operation to recipe
+4. See output (right side)
+
+[QUICK USE]
+- Try: From Base64
+- Try: Magic (auto detect)
+
+========================================
+🔑 JWT.IO
+========================================
+
+URL: https://jwt.io/
+
+[WHAT IT DOES]
+- Decode and edit JWT tokens
+
+[HOW TO USE]
+1. Paste JWT token
+2. Edit payload (middle section)
+3. Change values (e.g. "isAdmin": true)
+4. Copy new token
+
+========================================
+🔐 BASE64 DECODE
+========================================
+
+URL: https://www.base64decode.org/
+
+[WHAT IT DOES]
+- Decode Base64 text
+
+[HOW TO USE]
+1. Paste encoded string
+2. Click decode
+3. Read output
+
+========================================
+🔡 URL ENCODER / DECODER
+========================================
+
+URL: https://www.urlencoder.org/
+
+[WHAT IT DOES]
+- Encode/decode URL characters
+
+[HOW TO USE]
+1. Paste text
+2. Click encode/decode
+3. Use result in payload
+
+========================================
+🔍 HASH IDENTIFIER
+========================================
+
+URL: https://hashes.com/en/tools/hash_identifier
+
+[WHAT IT DOES]
+- Identify hash type (MD5, SHA1, etc.)
+
+[HOW TO USE]
+1. Paste hash
+2. Detect type
+3. Use cracking tools
+
+========================================
+🔓 HASH CRACKER
+========================================
+
+URL: https://crackstation.net/
+
+[WHAT IT DOES]
+- Crack common hashes
+
+[HOW TO USE]
+1. Paste hash
+2. Click crack
+3. Get plaintext
+
+========================================
+🔢 XOR TOOL
+========================================
+
+URL: https://xor.pw/
+
+[WHAT IT DOES]
+- XOR encryption/decryption
+
+[HOW TO USE]
+1. Paste input
+2. Try keys
+3. Analyze output
+
+========================================
+🌐 REQUESTBIN / WEBHOOK
+========================================
+
+URL: https://webhook.site/
+
+[WHAT IT DOES]
+- Capture HTTP requests (for SSRF)
+
+[HOW TO USE]
+1. Open site → get unique URL
+2. Use URL in SSRF payload
+3. Check incoming request
+
+========================================
+🧪 JSON FORMATTER
+========================================
+
+URL: https://jsonformatter.org/
+
+[WHAT IT DOES]
+- Beautify JSON
+
+[HOW TO USE]
+1. Paste JSON
+2. Format
+3. Read clearly
+
+========================================
+🧠 MAGIC TOOL (IMPORTANT)
+========================================
+
+Use CyberChef → Magic
+
+[WHAT IT DOES]
+- Auto-detect encoding
+
+[HOW TO USE]
+1. Paste text
+2. Add "Magic"
+3. Check suggestions
+
+========================================
+🔥 QUICK USAGE FLOW
+========================================
+
+- Weird text → CyberChef (Magic)
+- JWT token → jwt.io
+- Encoded string → Base64 tool
+- Hash → Crackstation
+- SSRF → webhook.site
+- JSON → formatter
+
+========================================
+RULES
+========================================
+
+- DON'T GUESS → USE TOOL
+- CYBERCHEF = MOST IMPORTANT
+- TRY MAGIC FIRST
+- COPY → TEST → REPEAT
+
+========================================

@@ -1,0 +1,179 @@
+========================================
+PYTHON (CTF SCRIPT MODIFY CHEATSHEET)
+========================================
+
+[GOAL]
+- Understand code fast
+- Modify logic
+- Bypass checks
+- Extract flag
+
+========================================
+🧠 STEP 1: UNDERSTAND FAST
+========================================
+
+print(code)
+print(variables)
+
+Add debug prints:
+print("DEBUG:", var)
+
+========================================
+🔍 COMMON THINGS TO LOOK FOR
+========================================
+
+- if conditions
+- loops
+- hidden values
+- encoding/decoding
+- comparisons
+
+========================================
+🔓 BYPASS CONDITIONS
+========================================
+
+# Original
+if password == "secret":
+
+# Modify
+if True:
+
+----------------------------------------
+
+# Original
+if user_input == correct:
+
+# Modify
+if 1:
+
+========================================
+🔁 MODIFY VARIABLES
+========================================
+
+# Original
+key = generate_key()
+
+# Replace
+key = "known_value"
+
+----------------------------------------
+
+# Force value
+user = "admin"
+
+========================================
+🔐 REMOVE CHECKS
+========================================
+
+# Original
+if not valid:
+    exit()
+
+# Remove or comment
+# exit()
+
+========================================
+🔁 LOOP CONTROL
+========================================
+
+# Infinite loop fix
+while True:
+→ change to:
+for i in range(10):
+
+========================================
+📤 FORCE OUTPUT
+========================================
+
+# Print hidden variable
+print(flag)
+print(secret)
+print(password)
+
+========================================
+🔓 DECODE LOGIC
+========================================
+
+# If encoded
+decoded = base64.b64decode(data)
+print(decoded)
+
+========================================
+🧪 BRUTE FORCE INSIDE SCRIPT
+========================================
+
+for i in range(10000):
+    if check(i):
+        print(i)
+
+========================================
+🔍 FIND FLAG IN CODE
+========================================
+
+- search for:
+  flag
+  secret
+  key
+  password
+
+========================================
+📂 MODIFY INPUT
+========================================
+
+# Replace input
+user_input = "admin"
+
+========================================
+🧠 SHORTCUT TRICKS
+========================================
+
+- Replace condition with True
+- Print everything
+- Remove exits
+- Hardcode values
+
+========================================
+🔥 COMMON PATTERNS
+========================================
+
+[1] Hidden flag variable
+→ print(flag)
+
+[2] Condition block
+→ bypass with True
+
+[3] Encoding
+→ decode step by step
+
+[4] Comparison
+→ force match
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Trying to understand everything deeply
+- Not printing variables
+- Ignoring simple bypass
+
+========================================
+🔥 QUICK CHECKLIST
+========================================
+
+[ ] Printed variables?
+[ ] Found conditions?
+[ ] Bypassed checks?
+[ ] Forced output?
+[ ] Removed exit?
+[ ] Tried decode?
+
+========================================
+RULES
+========================================
+
+- DON'T READ EVERYTHING
+- MODIFY AND TEST
+- PRINT EVERYTHING
+- BYPASS > UNDERSTAND
+
+========================================

